@@ -1,4 +1,8 @@
 <script>
-  var ua = navigator.userAgent;
-  document.write(ua);
+  var ua = navigator.userAgent || navigator.vendor || window.opera;
+  if (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1){
+    window.location.replace("http://stackoverflow.com");
+  }else{
+    document.write(ua);
+  }
 </script>
