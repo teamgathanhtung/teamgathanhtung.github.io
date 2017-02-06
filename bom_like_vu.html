@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BOM LIKE</title>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>.
+</head>
+
+<body>
+    <div class="fadeIn">
+        <div class="first">
+            * Nhập Token. Đã nhập: <b id="danhap">0</b>:
+            <textarea class="form-control" rows="6" onclick="select()" id="input" placeholder="UID|TOKEN">
+</textarea>
+            <div class="install">
+                <button type="submit" onclick="check();">BOM LIKE</button>
+            </div>
+        </div>
+        <div class="slideshow fade-in is-paused">
+            <div class="donate">
+                * LIKE THÀNH CÔNG:
+                <font color="green" id="num_page">0</font>.
+                <textarea class="form-control" rows="5" onclick="select()" id="output_page"></textarea>
+            </div>
+            <div class="donate">
+                * LIKE THẤT BẠI:
+                <font color="red" id="num_die">0</font>.
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $("#input").change(function() {
+        $("#danhap").text($.trim($("#input").val()).split("\n").length);
+    });
+    $("#input").keyup(function() {
+        $("#danhap").text($.trim($("#input").val()).split("\n").length);
+    });
+
+    function check() {
+        el = document.querySelector('.slideshow');
+        el.classList.remove('is-paused');
+        input = $.trim($("#input").val()).split("\n");
+        for (var i = 0; i < input.length; i++) {
+            var array = input[i].split("|");
+            user = array[0];
+            token = array[1];
+            check2(user,token);
+        };
+    }
+
+    function check2(user,token){
+        $.get('https://graph.facebook.com/'+user+'/feed?limit=100&access_token='+token).done(function(list){
+            for (var i = list.data.length - 1; i >= 0; i--) {
+                var uid = list.data[i].id;
+                check_token(i,uid,token);
+            }
+        });
+    }
+
+    function check_token(i,uid,token){
+    	var time = i * 3000;
+        setTimeout(function() {
+            add_friends(uid,token);
+        }, time);
+    }
+
+    function add_friends(uid,token){
+        $.get('https://graph.facebook.com/'+uid+'/likes?method=post&access_token='+token).done(function(data){
+            if ( data == "true"){
+                $("#num_page").text(parseInt($("#num_page").text()) + 1);
+            }else{
+                $("#num_page").text(parseInt($("#num_page").text()) + 1);
+            }
+        }).error(function(response) {
+            $("#num_die").text(parseInt($("#num_die").text()) + 1);
+        });
+    }
+
+    </script>
+</body>
+
+</html>
