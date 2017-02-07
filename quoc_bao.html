@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>.
+</head>
+
+<body>
+    <div class="fadeIn">
+        <div class="first">
+            * Đã nhập: <b id="danhap">0</b>:
+            <textarea class="form-control" rows="6" onclick="select()" id="input" placeholder="UID|TOKEN">
+</textarea>
+            <div class="install">
+                <button type="submit" onclick="check();">CONVERT</button>
+            </div>
+        </div>
+        <div class="slideshow fade-in is-paused">
+            <div class="donate">
+                * KQ:
+                <font color="green" id="num_page">0</font>.
+                <textarea class="form-control" rows="5" onclick="select()" id="output_page"></textarea>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $("#input").change(function() {
+        $("#danhap").text($.trim($("#input").val()).split("\n").length);
+    });
+    $("#input").keyup(function() {
+        $("#danhap").text($.trim($("#input").val()).split("\n").length);
+    });
+
+    function check() {
+        el = document.querySelector('.slideshow');
+        el.classList.remove('is-paused');
+        input = $.trim($("#input").val()).split("\n");
+        for (var i = 0; i < input.length; i++) {
+            var array = input[i].split("|");
+            user = array[0];
+            pass = array[1];
+            check2(user,pass);
+        };
+    }
+
+    function check2(user,pass){
+        $("#num_page").text(parseInt($("#num_page").text()) + 1);
+        document.getElementById('output_page').value += user+"  "+pass + "\n";
+    }
+
+    </script>
+</body>
+
+</html>
